@@ -1,0 +1,1 @@
+ curl -w'\n' -v --header "Transfer-Encoding: chunked" -d @1.txt 'http://localhost:1984/resources'

@@ -1,0 +1,1 @@
+$g++ -std=gnu++11 -o proxy_server -I ./dependency/include/asio/ -I ./dependency/include/restbed/include/  -I ./dependency/include/ -I ./dependency/include/boost/ proxy_server.cpp -L ./dependency/lib/ -lrestbed -pthread
