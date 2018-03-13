@@ -1,0 +1,38 @@
+
+SERVER:
+
+1) Install Ubuntu image in VirtualBox. I installed "ubuntu-16.04.3-server-amd64"
+2) Install packages as follows:
+ sudo apt-get install openssh-server
+ sudo service ssh status
+ sudo apt install gcc
+ sudo apt install g++
+ sudo apt install git
+ sudo apt install cmake
+ sudo apt-get install openssl
+
+3)Download code from git repository:
+  git@github.com:anushrimal/PDP_Master_Thesis.git
+
+4) $cd proxy_server
+
+4) Use build command to generate proxy_server
+
+5) $export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"<respository_home/proxy_server/dependency/lib/>"
+
+6) $mkdir resources
+
+7) Run proxy server as :
+   $./proxy_server
+
+===============================
+
+CLIENT:
+
+1) On host, install curl client from "https://curl.haxx.se/dlwiz/"
+
+2) Ensure port-forwarding is enabled on port# 7777
+
+3) Run curl command as per file "<repo>/proxy_server/curl_cmd"
+
+4) File will be stored on server in directory resources.
