@@ -48,14 +48,14 @@ SERVER and CLUSTER NODE:
   Example for cluster node:
 	$ ./pdpServer -d /home/anukriti/proxy_server/db_store -p 7777 -b
 	
-
+ 
 ===============================
 
 CLIENT:
 
 1) On host, install curl client from "https://curl.haxx.se/dlwiz/"
 
-2) Ensure port-forwarding is enabled on port# 7777
+2) Ensure port-forwarding is enabled on port# 6666
 
 3) Run curl command as per file "<repo>/proxy_server/curl_cmd"
 

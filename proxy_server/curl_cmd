@@ -1,1 +1,2 @@
-curl -w'\n' -v --header "Transfer-Encoding: chunked" -d "@1.txt" "http://localhost:7777/resources"
+curl -w'\n' -v --header "Transfer-Encoding: chunked" -F "FileName=first.txt" -F "FileData=@./resources/sample.txt" 'http://192.168.56.101:6666/resources/'
+
