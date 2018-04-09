@@ -23,17 +23,21 @@ RestServer::RestServer(int portNum, SaveOption opt)
 }
 void RestServer::start()
 {
-	auto resource = make_shared< Resource >( );
-	resource->set_path( "/resources" );
-	resource->set_method_handler( "POST", postMethodHandler );
+	auto one = make_shared< Resource >( );
+	one->set_path( "/resources" );
+	one->set_method_handler( "POST", postMethodHandler );
 
+	auto two = make_shared< Resource >( );
+    	two->set_path( "/resources/{file: .*}" );
+    	two->set_method_handler( "GET", getMethodHandler);
 	auto settings = make_shared< Settings >( );
 	settings->set_port(mPortNum );
 	settings->set_default_header( "Connection", "close" );
 
 	cout<<"Starting server on port number "<<mPortNum<<endl;
 	Service service;
-	service.publish( resource );
+	service.publish( one );
+	service.publish( two );
 	service.start( settings );
 }
 	
@@ -55,6 +59,22 @@ bool RestServer::setClusterDetails(char *ip, int port)
 		return false;
 	mSendFile = new SendFile(ip, port);
 	return true;
+}
+
+void RestServer::getMethodHandler( const shared_ptr< Session > session )
+{
+	const auto& request = session->get_request( );
+	const string body = request->get_path_parameter( "file" );
+	string fileDat;
+	cout<<"Get Request :"<<body<<endl;
+	if(mSaveOpt == ON_CLUSTER) {
+		if(mSendFile) {
+			fileDat = mSendFile->getFile(body.c_str());
+		}
+	} else {
+		fileDat = mDB->readFile(body.c_str());	
+	}
+	session->close( OK, fileDat, { { "Content-Length", ::to_string( fileDat.size( ) ) } } );
 }
 
 void RestServer::postMethodHandler( const shared_ptr< Session > session )
@@ -130,12 +150,18 @@ void RestServer::readChunkSize( const shared_ptr< Session > session, const Bytes
 		if(!fileDataFound) {
 			if((index = token.find("name=\"FileData\"")) != std::string::npos) {
 				fileData = (token.substr(index + 15, token.length()));
-				int contentLenStart = fileData.find("\r\n\r\n\r\n") + 6;
-				int contentLenEnd = fileData.find("\r\n", contentLenStart);
-				string contentLenStr = fileData.substr(contentLenStart, contentLenEnd - contentLenStart);
-                               	contentLen = atoi(contentLenStr.c_str());
-				int fileDataEnd = fileData.find("\r\n", contentLenEnd + 2);
-				fileData = fileData.substr(contentLenEnd + 2, fileDataEnd - (contentLenEnd + 2));
+				if(mSaveOpt != ON_DB) {
+					int contentLenStart = fileData.find("\r\n\r\n\r\n") + 6;
+					int contentLenEnd = fileData.find("\r\n", contentLenStart);
+					string contentLenStr = fileData.substr(contentLenStart, contentLenEnd - contentLenStart);
+                               		contentLen = atoi(contentLenStr.c_str());
+					int fileDataEnd = fileData.find("\r\n", contentLenEnd + 2);
+					fileData = fileData.substr(contentLenEnd + 2, fileDataEnd - (contentLenEnd + 2));
+				} else {
+					int contentStart = fileData.find("\r\n\r\n\r\n")+5;
+					int contentEnd = fileData.find("\r\n", contentStart);
+					fileData = fileData.substr(contentStart, contentEnd - contentStart);
+				}
 				cout<<"FileData :"<<fileData<<endl;
 				fileDataFound = true;		
 			}

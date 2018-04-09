@@ -1,6 +1,10 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string>
+#include <memory>
+#include <stdexcept>
+#include <string>
+#include <array>
 #include "SendFile.h"
 
 using namespace std;
@@ -29,3 +33,30 @@ bool SendFile::sendFile(char *fileName, char *fileData)
 	if(ret >= 0)
 		return 0;
 }
+
+string SendFile::getFile(const char *fileName)
+{
+	string curlCmd =  "curl -w'\n' -v -XGET 'http://";
+	curlCmd += mNodeIP;
+	curlCmd += ":";
+	curlCmd += to_string(mPortNum);
+	curlCmd += "/resources/";
+	curlCmd += fileName;
+	curlCmd += "'";
+	cout<<curlCmd<<endl;
+	string ret = exec(curlCmd.c_str());
+	cout<<" file status :"<<ret;
+	return ret;
+}
+
+string SendFile::exec(const char* cmd) {
+    std::array<char, 128> buffer;
+    std::string result;
+    std::shared_ptr<FILE> pipe(popen(cmd, "r"), pclose);
+    if (!pipe) throw std::runtime_error("popen() failed!");
+    while (!feof(pipe.get())) {
+        if (fgets(buffer.data(), 128, pipe.get()) != nullptr)
+            result += buffer.data();
+    }
+    return result;
+}	

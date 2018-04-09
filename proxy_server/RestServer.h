@@ -30,6 +30,8 @@ public:
 
 	static void postMethodHandler( const shared_ptr< Session > session );
 
+	static void getMethodHandler( const shared_ptr< Session > session );
+
 	static void readChunkSize( const shared_ptr< Session > session, const Bytes& data );
 
 	static void readChunk( const shared_ptr< Session > session, const Bytes& data );
