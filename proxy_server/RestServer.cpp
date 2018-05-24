@@ -124,8 +124,16 @@ void RestServer::readChunkSize( const shared_ptr< Session > session, const Bytes
 	session->close( OK );
 	const auto request = session->get_request( );
 	const auto body = request->get_body( );
-	string content = (char*)(body.data());
+	string content;// = (char*)(body.data());
 
+	ofstream myfile;
+	//myfile.open ("example.txt");
+	for (const auto &e : body) { 
+		//myfile << e;
+		content += e;
+	}
+  	//myfile.close();
+	cout<<"Content length :"<<content.length()<<endl;
 	//fprintf( stdout, "Complete body content: %.*s\n", static_cast< int >( body.size( ) ), body.data( ) );
 	size_t pos = 0;
 	string token;
@@ -143,26 +151,41 @@ void RestServer::readChunkSize( const shared_ptr< Session > session, const Bytes
 				int fileNameStart = fileName.find("\r\n\r\n") + 4;
 				int fileNameEnd = fileName.find("\r\n", fileNameStart);
 				fileName = fileName.substr( fileNameStart, fileNameEnd - fileNameStart );
+				token = token.find(fileNameEnd + 2);
 				fileNameFound = true;
 				cout<<"Filename :"<<fileName<<endl;
 			}
 		}
 		if(!fileDataFound) {
+			int contentStart = 0, contentEnd = 0;
 			if((index = token.find("name=\"FileData\"")) != std::string::npos) {
-				fileData = (token.substr(index + 15, token.length()));
-				if(mSaveOpt != ON_DB) {
-					int contentLenStart = fileData.find("\r\n\r\n\r\n") + 6;
-					int contentLenEnd = fileData.find("\r\n", contentLenStart);
-					string contentLenStr = fileData.substr(contentLenStart, contentLenEnd - contentLenStart);
-                               		contentLen = atoi(contentLenStr.c_str());
-					int fileDataEnd = fileData.find("\r\n", contentLenEnd + 2);
-					fileData = fileData.substr(contentLenEnd + 2, fileDataEnd - (contentLenEnd + 2));
-				} else {
-					int contentStart = fileData.find("\r\n\r\n\r\n")+5;
-					int contentEnd = fileData.find("\r\n", contentStart);
-					fileData = fileData.substr(contentStart, contentEnd - contentStart);
+				token = (token.substr(index + 15, token.length()));
+				//if(mSaveOpt != ON_DB) {
+					int contentLenStart = token.find("\r\n\r\n\r\n") + 6;
+					int contentLenEnd = token.find("\r\n", contentLenStart);
+					string contentLenStr = token.substr(contentLenStart, contentLenEnd - contentLenStart);
+                               		contentLen = strtoul(contentLenStr.c_str(), NULL, 16);
+					int fileDataEnd = token.find("\r\n", contentLenEnd + 2);
+					fileData = token.substr(contentLenEnd + 2, fileDataEnd - (contentLenEnd + 2));
+					token = token.substr(fileDataEnd + 2);
+				/*} else {
+					contentStart = token.find("\r\n\r\n\r\n")+5;
+					contentEnd = token.find("\r\n", contentStart);
+					fileData = token.substr(contentStart, contentEnd - contentStart);
+					token = token.substr(contentEnd + 2);
+				}*/
+				int furtherConStart = 0, furtherConEnd = 0;
+ 
+				while((furtherConStart = token.find("\r\n", contentEnd)) != -1) {
+					furtherConEnd = token.find("\r\n", furtherConStart + 2);
+					if(furtherConEnd == std::string::npos || furtherConEnd == furtherConStart + 2) 
+						break; 
+					//string contentLenStr = token.substr(furtherConStart, furtherConEnd - furtherConStart);
+					//contentLen = strtoul(contentLenStr.c_str(), NULL, 16);
+					//int fileDataEnd = fileData.find("\r\n", furtherConEnd + 2);
+					fileData +=  token.substr(furtherConStart + 2, furtherConEnd - furtherConStart - 2);
+					token = token.substr(furtherConEnd + 2);
 				}
-				cout<<"FileData :"<<fileData<<endl;
 				fileDataFound = true;		
 			}
 		} else {
@@ -172,20 +195,24 @@ void RestServer::readChunkSize( const shared_ptr< Session > session, const Bytes
 		}
 		content.erase(0, pos + mBoundary.length());
 	}
+	cout<<"Content length after erasing :"<<fileData.length()<<endl;
 	if(mSaveOpt == ON_CLUSTER) {
 		if(mSendFile) {
-			mSendFile->sendFile(fileName.c_str(), fileData.c_str());
+			myfile.open (fileName);
+			myfile << fileData;
+			myfile.close();
+			mSendFile->sendFile(fileName.c_str(), "example.txt");
 		}
 	} else if(mSaveOpt == ON_DB) {
 		mDB->writeFile(fileName.c_str(),  fileData.c_str());
-		cout<<"File saved on DB as:\n\t"<<mDB->readFile(fileName.c_str())<<endl;
+		//cout<<"File saved on DB as:\n\t"<<mDB->readFile(fileName.c_str())<<endl;
 	}
 }
 
 void RestServer::readChunk( const shared_ptr< Session > session, const Bytes& data )
 {
+	static int chunkNo = 1;
 	cout << "Partial body chunk: " << data.size( ) << " bytes" << endl;
-
 	session->fetch( "\r\n", RestServer::readChunkSize );
 }
 

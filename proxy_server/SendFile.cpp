@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string>
+#include <string.h>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -17,17 +18,18 @@ SendFile::SendFile(char *nodeIP, int portNum)
 
 bool SendFile::sendFile(char *fileName, char *fileData)
 {
+	cout<<"Size of fileData : "<<strlen(fileData)<<endl;
 	// curl -w'\n' -v --header "Transfer-Encoding: chunked" -F "FileName=first.txt" -F "FileData=@./resources/sample.txt" 'http://localhost:7777/resources/'
 	string curlCmd =  "curl -w'\n' -v --header \"Transfer-Encoding: chunked\" -F \"FileName=";
 	curlCmd += fileName;
-	curlCmd += "\" -F \"FileData=";
+	curlCmd += "\" -F \"FileData=@";
 	curlCmd += fileData;
 	curlCmd += "\" 'http://";
 	curlCmd += mNodeIP;
 	curlCmd += ":";
 	curlCmd += to_string(mPortNum);
 	curlCmd += "/resources'";
-	cout<<curlCmd<<endl;
+	//cout<<curlCmd<<endl;
 	int ret = system(curlCmd.c_str());
 	cout<<"Send file status :"<<ret;
 	if(ret >= 0)
