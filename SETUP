@@ -37,16 +37,10 @@ SERVER and CLUSTER NODE:
    Run pdpServer without any arguments to get the usage :
    $./pdpServer
 	USAGE :
-        ./pdpServer <-d db-path> <-p port-number> <-b|-s> [-i send-to-ip-adress] [-r send-to-port-num]
-                -d : Path where RocksDB must be initialized local disk
-                -p : Port number where rest-server must listen
-                -b : Store on DB
-                -s : Send file to IP address
+        ./pdpServer <config_file_full_name>
 	
-  Example for proxy_server:
-	$ ./pdpServer -p 6666 -s -i 192.168.56.102 -r 7777
-  Example for cluster node:
-	$ ./pdpServer -d /home/anukriti/proxy_server/db_store -p 7777 -b
+  Example usage next. Sample config file in "<respository_home/proxy_server/config.ini>".
+	$ ./pdpServer config.ini
 	
  
 ===============================
