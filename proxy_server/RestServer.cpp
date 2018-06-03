@@ -13,7 +13,7 @@
 RestServer::SaveOption RestServer::mSaveOpt;
 int RestServer::mPortNum;
 DBHandler* RestServer::mDB;
-SendFile*  RestServer::mSendFile;
+vector<SendFile*>  RestServer::mSendFiles;
 string RestServer::mBoundary;
 
 RestServer::RestServer(int portNum, SaveOption opt)
@@ -53,11 +53,14 @@ bool RestServer::setDBPath(string dbPath) {
 	return true;
 }
 
-bool RestServer::setClusterDetails(char *ip, int port)
+bool RestServer::setClusterDetails(multimap<string, unsigned int> cns)
 {
 	if(mSaveOpt != ON_CLUSTER)
 		return false;
-	mSendFile = new SendFile(ip, port);
+	for(auto it = cns.begin(); it !=  cns.end(); ++it) {
+		mSendFiles.push_back(new SendFile(it->first, it->second));
+	}
+	//mSendFile = new SendFile(ip, port);
 	return true;
 }
 
@@ -68,8 +71,9 @@ void RestServer::getMethodHandler( const shared_ptr< Session > session )
 	string fileDat;
 	cout<<"Get Request :"<<body<<endl;
 	if(mSaveOpt == ON_CLUSTER) {
-		if(mSendFile) {
-			fileDat = mSendFile->getFile(body.c_str());
+		if(!mSendFiles.empty()) {
+			int cn_id = rand()%mSendFiles.size();
+			fileDat += mSendFiles[cn_id]->getFile(body.c_str());
 		}
 	} else {
 		fileDat = mDB->readFile(body.c_str());	
@@ -197,11 +201,13 @@ void RestServer::readChunkSize( const shared_ptr< Session > session, const Bytes
 	}
 	cout<<"Content length after erasing :"<<fileData.length()<<endl;
 	if(mSaveOpt == ON_CLUSTER) {
-		if(mSendFile) {
-			myfile.open (fileName);
+		if(!mSendFiles.empty()) {
+			myfile.open ("transfer.tmp");
 			myfile << fileData;
 			myfile.close();
-			mSendFile->sendFile(fileName.c_str(), "example.txt");
+			for(auto it = mSendFiles.begin(); it != mSendFiles.end(); ++it)
+				(*it)->sendFile(fileName.c_str(), "transfer.tmp");
+			remove("transfer.tmp");
 		}
 	} else if(mSaveOpt == ON_DB) {
 		mDB->writeFile(fileName.c_str(),  fileData.c_str());
@@ -212,7 +218,7 @@ void RestServer::readChunkSize( const shared_ptr< Session > session, const Bytes
 void RestServer::readChunk( const shared_ptr< Session > session, const Bytes& data )
 {
 	static int chunkNo = 1;
-	cout << "Partial body chunk: " << data.size( ) << " bytes" << endl;
+	//cout << "Partial body chunk: " << data.size( ) << " bytes" << endl;
 	session->fetch( "\r\n", RestServer::readChunkSize );
 }
 

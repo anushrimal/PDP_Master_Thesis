@@ -4,13 +4,12 @@
 #include <string.h>
 #include <memory>
 #include <stdexcept>
-#include <string>
 #include <array>
 #include "SendFile.h"
 
 using namespace std;
 
-SendFile::SendFile(char *nodeIP, int portNum)
+SendFile::SendFile(string nodeIP, unsigned int portNum)
 {
 	mNodeIP = nodeIP;
 	mPortNum = portNum;		
@@ -25,7 +24,7 @@ bool SendFile::sendFile(char *fileName, char *fileData)
 	curlCmd += "\" -F \"FileData=@";
 	curlCmd += fileData;
 	curlCmd += "\" 'http://";
-	curlCmd += mNodeIP;
+	curlCmd += mNodeIP.c_str();
 	curlCmd += ":";
 	curlCmd += to_string(mPortNum);
 	curlCmd += "/resources'";
@@ -47,7 +46,7 @@ string SendFile::getFile(const char *fileName)
 	curlCmd += "'";
 	cout<<curlCmd<<endl;
 	string ret = exec(curlCmd.c_str());
-	cout<<" file status :"<<ret;
+	//cout<<" file status :"<<ret;
 	return ret;
 }
 

@@ -2,18 +2,21 @@
 #define _SEND_FILE_H_
 
 #include<string>
+
+using namespace std;
+
 class SendFile
 {
 protected:
-	char *mNodeIP;
-	int mPortNum;
+	string mNodeIP;
+	unsigned int mPortNum;
 
-	std::string exec(const char *cmd);
+	string exec(const char *cmd);
 	 
 public:
-	SendFile(char *nodeIP, int portNum);
+	SendFile(string nodeIP, unsigned int portNum);
 	bool sendFile(char *fileName, char *fileData);
-	std::string getFile(const char *fileName);	
+	string getFile(const char *fileName);	
 };
 
 #endif

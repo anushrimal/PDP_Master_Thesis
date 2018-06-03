@@ -3,6 +3,7 @@
 
 #include<string>
 #include<iostream>
+#include<vector>
 
 #include "restbed"
 #include "DBHandler.h"
@@ -24,7 +25,7 @@ public:
 
 	static bool setDBPath(string dbPath);
 
-	static bool setClusterDetails(char *ip, int port_num);
+	static bool setClusterDetails(multimap<string, unsigned int> cns);
 
 	static void start();
 
@@ -39,7 +40,7 @@ protected:
 	static SaveOption mSaveOpt;
 	static int mPortNum;
 	static DBHandler *mDB;
-	static SendFile *mSendFile;
+	static vector<SendFile *> mSendFiles;
 	static string mBoundary;
 
 };	
