@@ -30,7 +30,7 @@ bool SendFile::sendFile(char *fileName, char *fileData)
 	curlCmd += "/resources'";
 	//cout<<curlCmd<<endl;
 	int ret = system(curlCmd.c_str());
-	cout<<"Send file status :"<<ret;
+	//cout<<"Send file status :"<<ret;
 	if(ret >= 0)
 		return 0;
 }
@@ -50,6 +50,22 @@ string SendFile::getFile(const char *fileName)
 	return ret;
 }
 
+string SendFile::challenge(const char *fileName, string params){
+	string curlCmd =  "curl -w'\n' -v -XCHALLENGE 'http://";
+	curlCmd += mNodeIP;
+	curlCmd += ":";
+	curlCmd += to_string(mPortNum);
+	curlCmd += "/challenge/";
+	curlCmd += fileName;
+	curlCmd += "?";
+	curlCmd += "idx=,";
+	curlCmd += params;
+	curlCmd += "'";
+	cout<<curlCmd<<endl;
+	string ret = exec(curlCmd.c_str());
+	return ret;
+}
+
 string SendFile::exec(const char* cmd) {
     std::array<char, 128> buffer;
     std::string result;
@@ -61,3 +77,4 @@ string SendFile::exec(const char* cmd) {
     }
     return result;
 }	
+

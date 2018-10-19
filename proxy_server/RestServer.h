@@ -33,6 +33,8 @@ public:
 
 	static void getMethodHandler( const shared_ptr< Session > session );
 
+	static void challengeMethodHandler( const shared_ptr< Session > session );
+
 	static void readChunkSize( const shared_ptr< Session > session, const Bytes& data );
 
 	static void readChunk( const shared_ptr< Session > session, const Bytes& data );
@@ -43,6 +45,7 @@ protected:
 	static vector<SendFile *> mSendFiles;
 	static string mBoundary;
 
+	static string generateBTree(string filename, string fileData, int blocksize, int order);
 };	
 
 #endif

@@ -37,6 +37,7 @@ int main(int argc, char*argv[])
 
 	if(opt == RestServer::ON_CLUSTER) {
 			srv->setClusterDetails(cfg.mCNs);
+			srv->setDBPath(cfg.mPath);
 	} else if (opt == RestServer::ON_DB) {
 			srv->setDBPath(cfg.mPath);
 	} else {

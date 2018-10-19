@@ -17,6 +17,7 @@ public:
 	SendFile(string nodeIP, unsigned int portNum);
 	bool sendFile(char *fileName, char *fileData);
 	string getFile(const char *fileName);	
+	string challenge(const char* fileName, string params);
 };
 
 #endif

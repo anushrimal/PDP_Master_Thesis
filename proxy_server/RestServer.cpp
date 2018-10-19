@@ -9,6 +9,10 @@
 #include <boost/algorithm/string.hpp>
 #include "restbed"
 #include "RestServer.h"
+#include "BPlusTree.h"
+#include "RpiAuth.h"
+
+#define DEFAULT_ORDER 3
 
 RestServer::SaveOption RestServer::mSaveOpt;
 int RestServer::mPortNum;
@@ -30,6 +34,11 @@ void RestServer::start()
 	auto two = make_shared< Resource >( );
     	two->set_path( "/resources/{file: .*}" );
     	two->set_method_handler( "GET", getMethodHandler);
+
+	auto three =  make_shared< Resource >( );
+	three->set_path( "/challenge/{file: .*}" );
+	three->set_method_handler( "CHALLENGE", challengeMethodHandler);
+
 	auto settings = make_shared< Settings >( );
 	settings->set_port(mPortNum );
 	settings->set_default_header( "Connection", "close" );
@@ -38,13 +47,11 @@ void RestServer::start()
 	Service service;
 	service.publish( one );
 	service.publish( two );
+	service.publish( three );
 	service.start( settings );
 }
 	
 bool RestServer::setDBPath(string dbPath) {
-	if(mSaveOpt != ON_DB) 
-		return false;
-
 	mDB = new DBHandler();
 	bool stat = mDB->init(dbPath);
 	if(stat == false)
@@ -52,6 +59,7 @@ bool RestServer::setDBPath(string dbPath) {
 	
 	return true;
 }
+
 
 bool RestServer::setClusterDetails(multimap<string, unsigned int> cns)
 {
@@ -62,6 +70,83 @@ bool RestServer::setClusterDetails(multimap<string, unsigned int> cns)
 	}
 	//mSendFile = new SendFile(ip, port);
 	return true;
+}
+
+void RestServer::challengeMethodHandler( const shared_ptr< Session > session )
+{
+	const auto& request = session->get_request( );
+	const string body = request->get_path_parameter( "file" );
+	string fileDat;
+	if(mSaveOpt == ON_CLUSTER) {
+		RpiAuth *rpiA = new RpiAuth();
+		if(rpiA->parse(mDB, body.c_str())) {
+			set<int> bnums;
+			int blockcount = rpiA->blockcount;
+			int blocksize = rpiA->blocksize;
+			//Select 20% of blocks to verify
+			double blockperc = 0;
+			vector<int> blocknums;
+			while(blockperc < 20) {
+				auto ret = bnums.insert(rand()%	blockcount);
+				if(ret.second) { // inserted
+					if(bnums.find(0) != bnums.end()) {
+						bnums.erase(0);
+						continue;
+					}
+					blockperc += 1/(double)blockcount * 100;
+				}
+			}
+			if(!mSendFiles.empty()) {
+				int cn_id = rand()%mSendFiles.size();
+				stringstream blocks; 
+				//Add blocks in format "start_idx1:end_idx1,start_idx2:end_idx2 ...."
+				for(auto block : bnums) {
+					int start_idx = (block == 1)?0:(block - 1) *blocksize;
+					int end_idx = start_idx + blocksize - 1;
+					blocks<<start_idx;
+					blocks<<":";
+					blocks<<end_idx; 	
+					blocks<<",";
+				}
+				string params;
+				blocks>>params;
+				string response = mSendFiles[cn_id]->challenge(body.c_str(), params);
+				vector<string> hashes;
+				boost::algorithm::split(hashes, response, boost::algorithm::is_any_of(","));
+				string chalRes;
+				copy(bnums.begin(), bnums.end(), std::back_inserter(blocknums));
+				if(rpiA->validate(blocknums, hashes, chalRes)) {
+					session->close( OK, chalRes, { { "Content-Length", ::to_string( chalRes.size( ) ) } } );	
+				} else {
+					session->close( OK, chalRes);
+				}
+			}
+		}
+		
+		} else {
+			string idxs = request->get_query_parameter( "idx" );
+
+			vector<string> blocks;
+			fileDat = mDB->readFile(body.c_str());
+			boost::algorithm::split(blocks, idxs, boost::algorithm::is_any_of(","));
+			stringstream ss;
+			for(int i = 0; i < blocks.size(); i++) {
+				unsigned char c_hash[SHA256_DIGEST_LENGTH] = {0};
+				int idx = blocks[i].find(":");	
+				if(idx == -1) 
+					continue;
+				int start_idx = atoi(blocks[i].substr(0, idx).c_str());
+				int end_idx = atoi(blocks[i].substr(idx+1, blocks[i].size()).c_str());
+				if(end_idx > fileDat.size()) 
+					end_idx = fileDat.size();
+				sha256(fileDat.substr(start_idx, end_idx).c_str(), end_idx - start_idx + 1, c_hash);
+				ss<<uchar_to_str(c_hash)<<',';
+			}	
+			string chalRes;
+			ss>>chalRes;
+			session->close( OK, chalRes, { { "Content-Length", ::to_string( chalRes.size( ) ) } } );
+		
+	}
 }
 
 void RestServer::getMethodHandler( const shared_ptr< Session > session )
@@ -80,6 +165,7 @@ void RestServer::getMethodHandler( const shared_ptr< Session > session )
 	}
 	session->close( OK, fileDat, { { "Content-Length", ::to_string( fileDat.size( ) ) } } );
 }
+
 
 void RestServer::postMethodHandler( const shared_ptr< Session > session )
 {
@@ -102,7 +188,7 @@ void RestServer::postMethodHandler( const shared_ptr< Session > session )
 			const auto request = session->get_request( );
 			const auto body = request->get_body( );
 
-			fprintf( stdout, "Complete body content: %.*s\n", static_cast< int >( body.size( ) ), body.data( ) );
+			//fprintf( stdout, "Complete body content: %.*s\n", static_cast< int >( body.size( ) ), body.data( ) );
 			session->close( OK );
 		} );
 	}
@@ -125,7 +211,6 @@ void RestServer::readChunkSize( const shared_ptr< Session > session, const Bytes
 			return;
 		}
 	}
-	session->close( OK );
 	const auto request = session->get_request( );
 	const auto body = request->get_body( );
 	string content;// = (char*)(body.data());
@@ -137,7 +222,7 @@ void RestServer::readChunkSize( const shared_ptr< Session > session, const Bytes
 		content += e;
 	}
   	//myfile.close();
-	cout<<"Content length :"<<content.length()<<endl;
+	//cout<<"Content length :"<<content.length()<<endl;
 	//fprintf( stdout, "Complete body content: %.*s\n", static_cast< int >( body.size( ) ), body.data( ) );
 	size_t pos = 0;
 	string token;
@@ -146,9 +231,11 @@ void RestServer::readChunkSize( const shared_ptr< Session > session, const Bytes
 	int contentLen = 0;
 	bool fileNameFound = false;
 	bool fileDataFound = false;
+	bool secureTransfer = false;
 	while ((pos = content.find(mBoundary)) != std::string::npos) {
 		token = content.substr(0, pos);
 		int index = 0;
+		
 		if(!fileNameFound) {
 			if((index = token.find("name=\"FileName\"")) != std::string::npos) {
 				fileName = token.substr(index + 15, token.length());
@@ -160,6 +247,11 @@ void RestServer::readChunkSize( const shared_ptr< Session > session, const Bytes
 				cout<<"Filename :"<<fileName<<endl;
 			}
 		}
+		if(!secureTransfer) {
+			if((index = token.find("name=\"Secured\"")) != std::string::npos) {
+				secureTransfer = true;
+			}
+		}
 		if(!fileDataFound) {
 			int contentStart = 0, contentEnd = 0;
 			if((index = token.find("name=\"FileData\"")) != std::string::npos) {
@@ -169,6 +261,7 @@ void RestServer::readChunkSize( const shared_ptr< Session > session, const Bytes
 					int contentLenEnd = token.find("\r\n", contentLenStart);
 					string contentLenStr = token.substr(contentLenStart, contentLenEnd - contentLenStart);
                                		contentLen = strtoul(contentLenStr.c_str(), NULL, 16);
+					//int fileDataEnd = token.find("\r\n30\r\n\r\n--", contentLenEnd + 2);
 					int fileDataEnd = token.find("\r\n", contentLenEnd + 2);
 					fileData = token.substr(contentLenEnd + 2, fileDataEnd - (contentLenEnd + 2));
 					token = token.substr(fileDataEnd + 2);
@@ -202,16 +295,26 @@ void RestServer::readChunkSize( const shared_ptr< Session > session, const Bytes
 	cout<<"Content length after erasing :"<<fileData.length()<<endl;
 	if(mSaveOpt == ON_CLUSTER) {
 		if(!mSendFiles.empty()) {
+			if(secureTransfer) {
+				int blocksize = getBlockSize(fileData.length());
+				// TODO : Calculate order
+				int order = DEFAULT_ORDER;
+				string rootHash = generateBTree(fileName, fileData, blocksize, order);
+				
+				session->close( OK, rootHash );
+			}
 			myfile.open ("transfer.tmp");
 			myfile << fileData;
 			myfile.close();
 			for(auto it = mSendFiles.begin(); it != mSendFiles.end(); ++it)
 				(*it)->sendFile(fileName.c_str(), "transfer.tmp");
 			remove("transfer.tmp");
+			session->close( OK );
 		}
 	} else if(mSaveOpt == ON_DB) {
 		mDB->writeFile(fileName.c_str(),  fileData.c_str());
 		//cout<<"File saved on DB as:\n\t"<<mDB->readFile(fileName.c_str())<<endl;
+		session->close( OK );
 	}
 }
 
@@ -222,3 +325,52 @@ void RestServer::readChunk( const shared_ptr< Session > session, const Bytes& da
 	session->fetch( "\r\n", RestServer::readChunkSize );
 }
 
+string RestServer::generateBTree(string filename, string fileData, int blocksize, int order)
+{
+	map<int,string> blockHashes;
+	int filesz = fileData.length();
+	BPlusTree *btree = new BPlusTree(order);
+	node * root = NULL;
+	unsigned char t_hash[SHA256_DIGEST_LENGTH] = {0};
+	string ret;
+
+	int remsz = 0, blocknum = 1, blockcount = 0;
+	int readIdx = 0;
+	remsz = filesz;
+
+	if(filesz%blocksize== 0) {
+		blockcount = filesz / blocksize;
+	} else {
+		blockcount = filesz / blocksize + 1;
+	}
+
+	while(remsz > 0) {
+		unsigned char hash[SHA256_DIGEST_LENGTH] = {0};
+		if(remsz < blocksize) {
+			sha256(fileData.substr(readIdx, remsz).c_str(), remsz, hash);
+			remsz = 0;
+			readIdx += remsz;
+		} else {
+			sha256(fileData.substr(readIdx, blocksize).c_str(), blocksize, hash);
+			remsz -= blocksize;
+			readIdx += blocksize;
+		}
+		if(blocknum == 1) {
+			memcpy(t_hash, hash, SHA256_DIGEST_LENGTH);
+		}
+		record *rec = new record();
+		rec->blocknum = blocknum;
+		memcpy(rec->hash, hash, SHA256_DIGEST_LENGTH);
+		
+		root = btree->insert(root, blocknum, rec);
+		blocknum++;
+	}
+	cout<<"\n\n========================================================================\n";
+	cout<<"Evaluating merkel tree hashes\n========================================================================\n";
+	ret = btree->evaluate(root);
+	btree->generate_rpi(root);
+	btree->dumpDataOnDB(mDB, filename.c_str(), root, blocksize, blocknum - 1); 
+	btree->destroy_tree(root);
+	delete btree;
+	return ret;
+}

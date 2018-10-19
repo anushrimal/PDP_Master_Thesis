@@ -18,6 +18,7 @@ bool DBHandler::init(string dbPath) {
 	options.OptimizeLevelStyleCompaction();
 	options.create_if_missing = true;
 	Status s = DB::Open(options, mDbPath, &(this->mDb));
+	cout<<endl<<s.ToString()<<endl;
 	return s.ok();
 }
 
