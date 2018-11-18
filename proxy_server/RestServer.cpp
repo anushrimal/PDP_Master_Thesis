@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>  
 #include <errno.h>
+#include <thread>
 
 #include <boost/algorithm/string.hpp>
 #include "restbed"
@@ -41,6 +42,7 @@ void RestServer::start()
 
 	auto settings = make_shared< Settings >( );
 	settings->set_port(mPortNum );
+	settings->set_worker_limit( std::thread::hardware_concurrency( ) );
 	settings->set_default_header( "Connection", "close" );
 
 	cout<<"Starting server on port number "<<mPortNum<<endl;
@@ -306,8 +308,21 @@ void RestServer::readChunkSize( const shared_ptr< Session > session, const Bytes
 			myfile.open ("transfer.tmp");
 			myfile << fileData;
 			myfile.close();
-			for(auto it = mSendFiles.begin(); it != mSendFiles.end(); ++it)
-				(*it)->sendFile(fileName.c_str(), "transfer.tmp");
+			vector<thread> workers;
+    			int i = 0;
+			for (auto it = mSendFiles.begin(); it != mSendFiles.end(); ++it) {
+        			workers.push_back(std::thread([it, fileName]() 
+        			{
+					(*it)->sendFile(fileName.c_str(), "transfer.tmp");
+        			}));
+			}
+    
+			std::for_each(workers.begin(), workers.end(), [](thread &t) 
+			{
+				t.join();
+			});
+			//for(auto it = mSendFiles.begin(); it != mSendFiles.end(); ++it)
+			//	(*it)->sendFile(fileName.c_str(), "transfer.tmp");
 			remove("transfer.tmp");
 			session->close( OK );
 		}
