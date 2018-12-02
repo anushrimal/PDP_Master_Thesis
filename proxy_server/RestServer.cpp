@@ -255,6 +255,7 @@ void RestServer::readChunkSize( const shared_ptr< Session > session, const Bytes
 			}
 		}
 		if(!fileDataFound) {
+TryAgain:
 			int contentStart = 0, contentEnd = 0;
 			if((index = token.find("name=\"FileData\"")) != std::string::npos) {
 				token = (token.substr(index + 15, token.length()));
@@ -293,6 +294,10 @@ void RestServer::readChunkSize( const shared_ptr< Session > session, const Bytes
 			fileData += token.substr(fileDataStart, fileDataEnd - fileDataStart);
 		}
 		content.erase(0, pos + mBoundary.length());
+	}
+	if(!fileDataFound) {
+		token = content;
+		goto TryAgain;
 	}
 	cout<<"Content length after erasing :"<<fileData.length()<<endl;
 	if(mSaveOpt == ON_CLUSTER) {
