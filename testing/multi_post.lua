@@ -13,13 +13,27 @@ function read_txt_file(path)
     return content
 end
 
+
+-- function init(args)
+-- 	for i, v in ipairs(args) do
+--         	 print(i,v)
+-- 		 Filename = v
+-- 		 return Filename
+--     	end
+--	local files = string.match([[/mnt/tmp/myfile.txt]], "(.-)([^\\/]-%.?([^%.\\/]*))$")
+--	print(files)
+--	return files
+-- end
+
 local Boundary = "----WebKitFormBoundaryePkpFF7tjBAqx29L"
 local BodyBoundary = "--" .. Boundary
 local LastBoundary = "--" .. Boundary .. "--"
 
 local CRLF = "\r\n"
 
-local FileBody = read_txt_file("/home/ubuntu/test_files/128-000.txt")
+local FileBody = read_txt_file("/home/ubuntu/test_files/512-000.txt")
+local FileSize = string.len(FileBody)
+local FileName = "512.txt"
 
 -- We don't need different file names here because the test should
 -- always replace the uploaded file with the new one. This will avoid
@@ -27,13 +41,16 @@ local FileBody = read_txt_file("/home/ubuntu/test_files/128-000.txt")
 -- the application, which is not what we are trying to test here.
 -- This will also avoid overloading wrk with more things do to, which
 -- can influence the test results.
-local Filename = "test.txt"
+-- local Filename = "test.txt"
 
-local ContentDisposition = "Content-Disposition: form-data; Secured=\"true\";" .. BodyBoundary .. "FileName=\"" .. Filename .. "\"" .. BodyBoundary .. "FileData=\""
+local ContentDisposition = "Content-Disposition: form-data; name=\"Secured\";" .. BodyBoundary .. "name=\"FileName\"" .. CRLF.. CRLF.. FileName .. CRLF .. CRLF .. BodyBoundary .. "name=\"FileData\""
+local fileBody = BodyBoundary .. CRLF .. ContentDisposition .. CRLF .. CRLF .. CRLF .. FileBody .. CRLF .. LastBoundary
 
 wrk.method = "POST"
 wrk.headers["Content-Type"] = "multipart/form-data; boundary=" .. Boundary
-wrk.body = BodyBoundary .. CRLF .. ContentDisposition .. CRLF .. CRLF .. FileBody .. CRLF .. LastBoundary
+wrk.headers["Content-Length"] = string.len(fileBody)
+wrk.body = BodyBoundary .. CRLF .. ContentDisposition .. CRLF .. CRLF ..  CRLF .. FileSize .. CRLF .. FileBody .. CRLF .. LastBoundary
+
 
 --
 -- THE FOLLOWING CODE IS MANUALLY INCLUDED FROM 'wrk_report.lua'
