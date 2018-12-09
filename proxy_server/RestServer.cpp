@@ -187,8 +187,10 @@ void RestServer::postMethodHandler( const shared_ptr< Session > session )
 		int length = request->get_header( "Content-Length", 0 );
 		session->fetch( length, [ ]( const shared_ptr< Session > session, const Bytes& )
 		{
-			const auto request = session->get_request( );
-			const auto body = request->get_body( );
+			//const auto request = session->get_request( );
+			//const auto body = request->get_body( );
+			const Bytes data;
+			RestServer::readChunkSize(session, data);
 
 			//fprintf( stdout, "Complete body content: %.*s\n", static_cast< int >( body.size( ) ), body.data( ) );
 			session->close( OK );

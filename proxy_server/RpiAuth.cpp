@@ -27,7 +27,7 @@ bool RpiAuth::parse(DBHandler *db, const char* filename)
 	string ret = db->readFile(filename);
 	std::stringstream ss;
 	ss << ret;
-	cout<<ret<<endl;
+	//cout<<ret<<endl;
 	pt::ptree proot;
 	pt::read_json(ss, proot);
 	this->levels = proot.get<int>("levels");
@@ -55,10 +55,10 @@ bool RpiAuth::parse(DBHandler *db, const char* filename)
 				h.clear();
 				prev_lev = cur_lev;
 			}
-			cout<<v.first;
+			//cout<<v.first;
 			for(auto iter = v.second.begin(); iter != v.second.end(); iter++)
 			{
-				cout <<" : "<< iter->first << "," << iter->second.data() << std::endl;
+				//cout <<" : "<< iter->first << "," << iter->second.data() << std::endl;
 				if(v.first.find("blocknum") != string::npos) {
 					b.push_back(stoi(iter->second.data()));
 				} else if(v.first.find("rpi") != string::npos) {
