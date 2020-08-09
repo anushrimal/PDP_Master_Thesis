@@ -308,7 +308,8 @@ TryAgain:
 				int blocksize = getBlockSize(fileData.length());
 				// TODO : Calculate order
 				int order = DEFAULT_ORDER;
-				string rootHash = generateBTree(fileName, fileData, blocksize, order);
+				int treeNodeCnt = 0;
+				string rootHash = generateBTree(fileName, fileData, blocksize, order, treeNodeCnt);
 				
 				session->close( OK, rootHash );
 			}
@@ -347,7 +348,7 @@ void RestServer::readChunk( const shared_ptr< Session > session, const Bytes& da
 	session->fetch( "\r\n", RestServer::readChunkSize );
 }
 
-string RestServer::generateBTree(string filename, string fileData, int blocksize, int order)
+string RestServer::generateBTree(string filename, string fileData, int blocksize, int order, int &blocks)
 {
 	map<int,string> blockHashes;
 	int filesz = fileData.length();
@@ -387,11 +388,14 @@ string RestServer::generateBTree(string filename, string fileData, int blocksize
 		root = btree->insert(root, blocknum, rec);
 		blocknum++;
 	}
-	cout<<"\n\n========================================================================\n";
-	cout<<"Evaluating merkel tree hashes\n========================================================================\n";
+	//cout<<"\n\n========================================================================\n";
+	//cout<<"Evaluating merkel tree hashes\n========================================================================\n";
 	ret = btree->evaluate(root);
 	btree->generate_rpi(root);
+	//btree->print_tree(root);
 	btree->dumpDataOnDB(mDB, filename.c_str(), root, blocksize, blocknum - 1); 
+	//nodeCount = btree->node_count(root);
+	blocks = blockcount;
 	btree->destroy_tree(root);
 	delete btree;
 	return ret;

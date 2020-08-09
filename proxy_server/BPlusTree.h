@@ -75,6 +75,9 @@ public:
 	void generate_rpi(node *root);
 	int find_parent_key_index(int key, node *parent);
 	bool dumpDataOnDB(DBHandler *db, const char* filename, node* n, int blocksize, int blockcount);
+
+	// Size
+	int node_count(node * const root);
 };
 
 #endif

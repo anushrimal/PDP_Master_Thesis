@@ -1,12 +1,16 @@
 CXX=g++
 
-OBJECTS=RestServer.o DBHandler.o SendFile.o ParseConfig.o Utils.o BPlusTree.o RpiAuth.o main.o
+OBJECTS=RestServer.o DBHandler.o SendFile.o ParseConfig.o Utils.o BPlusTree.o RpiAuth.o
+
+OBJECTS_M=main.o
+
+OBJECTS_T=test.o
 
 SRCS=RestServer.cpp DBHandler.cpp SendFile.cpp ParseConfig.cpp Utils.cpp BPlusTree.cpp RpiAuth.cpp main.cpp
 
 INCLUDES=-I ./dependency/include/asio/ -I ./dependency/include/restbed/include/  -I ./dependency/include/ -I ./dependency/include/boost/ -I ./dependency/include/
 
-CPPFLAGS= -std=gnu++11 -fpermissive -w #-g
+CPPFLAGS= -std=gnu++11 -fpermissive #-w -g
 
 LIBDIRS= -L ./dependency/lib/
 
@@ -35,14 +39,21 @@ SendFile.o : SendFile.cpp
 	$(CXX) $(CPPFLAGS) -c -o SendFile.o $(INCLUDES) SendFile.cpp
 
 main.o :  main.cpp RestServer.o DBHandler.o SendFile.o ParseConfig.o Utils.cpp BPlusTree.cpp RpiAuth.cpp
-	 $(CXX) $(CPPFLAGS) -c -o main.o  $(INCLUDES) main.cpp
+	$(CXX) $(CPPFLAGS) -c -o main.o  $(INCLUDES) main.cpp
+
+test.o : test.cpp RestServer.o DBHandler.o SendFile.o ParseConfig.o Utils.cpp BPlusTree.cpp RpiAuth.cpp
+	$(CXX) $(CPPFLAGS) -c -o test.o  $(INCLUDES) test.cpp
 
 
-all : $(OBJECTS) 
-	$(CXX) $(CPPFLAGS) -o $(TARGET) $(INCLUDES) $(OBJECTS) $(LIBDIRS) $(LIBS) 
+all : $(OBJECTS) $(OBJECTS_M) $(OBJECTS_T)
+	$(CXX) $(CPPFLAGS) -o $(TARGET) $(INCLUDES) $(OBJECTS_M) $(OBJECTS) $(LIBDIRS) $(LIBS) 
+	$(CXX) $(CPPFLAGS) -o $(TEST_TARGET) $(INCLUDES) $(OBJECTS) $(OBJECTS_T) $(LIBDIRS) $(LIBS)
 
 TARGET=pdpServer
+
+TEST_TARGET=testApp
 
 clean:
 	rm *.o
 	rm $(TARGET)
+	rm $(TEST_TARGET)

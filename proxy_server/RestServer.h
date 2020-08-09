@@ -38,6 +38,8 @@ public:
 	static void readChunkSize( const shared_ptr< Session > session, const Bytes& data );
 
 	static void readChunk( const shared_ptr< Session > session, const Bytes& data );
+	
+	static string generateBTree(string filename, string fileData, int blocksize, int order, int &treeLeafNodes);
 protected:
 	static SaveOption mSaveOpt;
 	static int mPortNum;
@@ -45,7 +47,6 @@ protected:
 	static vector<SendFile *> mSendFiles;
 	static string mBoundary;
 
-	static string generateBTree(string filename, string fileData, int blocksize, int order);
 };	
 
 #endif

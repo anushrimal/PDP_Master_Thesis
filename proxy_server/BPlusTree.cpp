@@ -339,6 +339,45 @@ void  BPlusTree::print_tree(node * const root) {
 	printf("\n");
 }
 
+int BPlusTree::node_count(node * const root) {
+
+	node * n = NULL;
+	int i = 0;
+	int rank = 0;
+	int new_rank = 0;
+	int nodeCount = 0;
+
+	if (root == NULL) {
+		printf("Empty tree.\n");
+		return 0;
+	}
+	queue = NULL;
+	enqueue(root);
+	while(queue != NULL) {
+		n = dequeue();
+		if (n->parent != NULL && n == n->parent->pointers[0]) {
+			new_rank = path_to_root(root, n);
+			if (new_rank != rank) {
+				rank = new_rank;
+			}
+		}
+		//for (i = 0; i < n->num_keys; i++) {
+			//printf("%d ", n->keys[i]);
+		//}
+		//printf("  rpi: ");
+		//for(i = 0; i <  n->num_keys+1; i++) {
+		//	printf("%d,", n->rpi[i]);
+		//}
+		if (!n->is_leaf)
+			for (i = 0; i <= n->num_keys; i++)
+				enqueue(n->pointers[i]);
+		//printf("| ");
+		nodeCount++;
+	}
+	
+	return nodeCount; 
+}
+
 unsigned char* BPlusTree::evaluatenode(node *n, int lev)
 {
 	unsigned char res[SHA256_DIGEST_LENGTH];
@@ -507,25 +546,6 @@ int BPlusTree::cut(int length) {
 	else
 		return length/2 + 1;
 }
-
-
-// INSERTION
-
-/* Creates a new record to hold the value
- * to which a key refers.
- *
-record * make_record(int value) {
-	record * new_record = (record *)malloc(sizeof(record));
-	if (new_record == NULL) {
-		perror("Record creation.");
-		exit(EXIT_FAILURE);
-	}
-	else {
-		new_record->value = value;
-	}
-	return new_record;
-}
-*/
 
 /* Creates a new general node, which can be adapted
  * to serve as either a leaf or an internal node.
