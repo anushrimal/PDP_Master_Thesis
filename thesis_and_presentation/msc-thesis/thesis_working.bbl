@@ -1,0 +1,75 @@
+\begin{thebibliography}{10}
+
+\bibitem{PDPDef}
+S.~Han, S.~Liu, K.~Chen, and D.~Gu, ``Proofs of retrievability based on mrd
+  codes,'' {\em Information Security Practice and Experience Lecture Notes in
+  Computer Science}, p.~330–345, 2014.
+
+\bibitem{JnK}
+A.~Juels and B.~S. Kaliski, ``Pors,'' {\em Proceedings of the 14th ACM
+  conference on Computer and communications security - CCS 07}, 2007.
+
+\bibitem{PoRHardness}
+Y.~Dodis, S.~Vadhan, and D.~Wichs, ``Proofs of retrievability via hardness
+  amplification,'' {\em Theory of Cryptography Lecture Notes in Computer
+  Science}, p.~109–127, 2009.
+
+\bibitem{DPS}
+D.~Filho and P.~Barreto, ``Demonstrating data possession and uncheatable data
+  transfer,'' {\em IACR Cryptology ePrint Archive}, vol.~2006, p.~150, 01 2006.
+
+\bibitem{Paper13}
+G.~S. Muhammad Saqib~Niaz, ``Merkle hash tree based techniques for data
+  integrity of outsourced data,'' {\em
+  http://ceur-ws.org/Vol-1366/paper13.pdf}, p.~1–13.
+
+\bibitem{IntegrityBook}
+V.~Atluri and G.~Pernul, {\em Data and applications security and privacy
+  XXVIII: 28th Annual IFIP WG 11.3 Working Conference, DBSec 2014, Vienna,
+  Austria, July 14-16, 2014: proceedings}.
+\newblock Springer, 2014.
+
+\bibitem{RestSdk}
+Microsoft, ``microsoft/cpprestsdk,'' Dec 2019.
+
+\bibitem{Restbed}
+Corvusoft, ``Corvusoft/restbed.''
+
+\bibitem{Pistache}
+Oktal, ``oktal/pistache,'' Feb 2020.
+
+\bibitem{BPlusTree}
+``B+ tree c implementation.''
+
+\bibitem{REDIS}
+``Redis db.''
+
+\bibitem{RocksDB}
+``Rocksdb: A persistent key-value store.''
+
+\bibitem{SHA}
+``Secured hash algorithm: Sha,'' 2020.
+
+\bibitem{SGX}
+``Software guard extensions,'' 2020.
+
+\bibitem{GRRJ}
+G.~Ateniese, R.~Burns, R.~Curtmola, J.~Herring, L.~Kissner, Z.~Peterson, and
+  D.~Song, ``Provable data possession at untrusted stores,'' {\em Proceedings
+  of the 14th ACM conference on Computer and communications security - CCS 07},
+  2007.
+
+\bibitem{YJA}
+Y.~Deswarte, J.-J. Quisquater, and A.~Saïdane, ``Remote integrity checking,''
+  {\em Integrity and Internal Control in Information Systems VI IFIP
+  International Federation for Information Processing}, p.~1–11.
+
+\bibitem{CPR}
+H.~Shacham and B.~Waters, ``Compact proofs of retrievability,'' {\em Advances
+  in Cryptology - ASIACRYPT 2008 Lecture Notes in Computer Science},
+  p.~90–107, 2008.
+
+\bibitem{MHT}
+``Merkle hash tree,'' 2020.
+
+\end{thebibliography}

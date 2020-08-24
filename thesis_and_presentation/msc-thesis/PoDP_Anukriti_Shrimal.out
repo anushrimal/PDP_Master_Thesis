@@ -1,0 +1,27 @@
+\BOOKMARK [0][-]{chapter.1}{1 Introduction}{}% 1
+\BOOKMARK [0][-]{chapter.2}{2 Problem Statement}{}% 2
+\BOOKMARK [0][-]{chapter.3}{3 Related Work}{}% 3
+\BOOKMARK [0][-]{chapter.4}{4 Background}{}% 4
+\BOOKMARK [1][-]{section.4.1}{4.1 Merkle hash tree}{chapter.4}% 5
+\BOOKMARK [1][-]{section.4.2}{4.2 B+ tree}{chapter.4}% 6
+\BOOKMARK [1][-]{section.4.3}{4.3 Radix Path Identifier}{chapter.4}% 7
+\BOOKMARK [0][-]{chapter.5}{5 Proposed algorithm}{}% 8
+\BOOKMARK [1][-]{section.5.1}{5.1 General approach}{chapter.5}% 9
+\BOOKMARK [1][-]{section.5.2}{5.2 Algorithm}{chapter.5}% 10
+\BOOKMARK [1][-]{section.5.3}{5.3 Architecture}{chapter.5}% 11
+\BOOKMARK [1][-]{section.5.4}{5.4 Correctness of Approach}{chapter.5}% 12
+\BOOKMARK [0][-]{chapter.6}{6 Implementation details}{}% 13
+\BOOKMARK [1][-]{section.6.1}{6.1 RESTful Server}{chapter.6}% 14
+\BOOKMARK [1][-]{section.6.2}{6.2 Merkle B+ tree}{chapter.6}% 15
+\BOOKMARK [1][-]{section.6.3}{6.3 Radix Path Identifier}{chapter.6}% 16
+\BOOKMARK [1][-]{section.6.4}{6.4 Key-value Datastore}{chapter.6}% 17
+\BOOKMARK [1][-]{section.6.5}{6.5 Safety measures}{chapter.6}% 18
+\BOOKMARK [0][-]{chapter.7}{7 Analysis and evaluation of the algorithm}{}% 19
+\BOOKMARK [1][-]{section.7.1}{7.1 End-to-end tests}{chapter.7}% 20
+\BOOKMARK [2][-]{subsection.7.1.1}{7.1.1 Evaluation settings}{section.7.1}% 21
+\BOOKMARK [2][-]{subsection.7.1.2}{7.1.2 Results}{section.7.1}% 22
+\BOOKMARK [1][-]{section.7.2}{7.2 Algorithm Performance}{chapter.7}% 23
+\BOOKMARK [2][-]{subsection.7.2.1}{7.2.1 Evaluation settings}{section.7.2}% 24
+\BOOKMARK [2][-]{subsection.7.2.2}{7.2.2 Results}{section.7.2}% 25
+\BOOKMARK [0][-]{chapter.8}{8 Conclusion and Future Work}{}% 26
+\BOOKMARK [1][-]{section.8.1}{8.1 Future work}{chapter.8}% 27

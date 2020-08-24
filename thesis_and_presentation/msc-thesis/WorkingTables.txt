@@ -1,0 +1,45 @@
+\begin{table}[]
+\centering
+\caption{Effect of block size on algorithm performance (in seconds)}
+\label{tab:blocksizeTestFinalTab}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|l|l|}
+\hline
+\rowcolor{mediumgray} 
+\multicolumn{2}{|l|}{\cellcolor{mediumgray}}                   & \multicolumn{12}{c|}{\cellcolor{mediumgray}File size (KB)}                                                                                                                                                                                                                                                   \\ \cline{3-14} 
+\rowcolor{mediumgray} 
+\multicolumn{2}{|l|}{\multirow{-2}{*}{\cellcolor{mediumgray}}} & \multicolumn{2}{c|}{\cellcolor{mediumgray}32} & \multicolumn{2}{c|}{\cellcolor{mediumgray}64} & \multicolumn{2}{c|}{\cellcolor{mediumgray}128} & \multicolumn{2}{c|}{\cellcolor{mediumgray}256} & \multicolumn{2}{c|}{\cellcolor{mediumgray}512} & \multicolumn{2}{c|}{\cellcolor{mediumgray}1024} \\ \hline
+\rowcolor{lightgray} 
+S.No.                       & BlockSize(KB)                      & Time(in sec)            & BlockCount            & Time(in sec)            & BlockCount            & Time(in sec)             & BlockCount            & Time(in sec)             & BlockCount            & Time(in sec)             & BlockCount            & Time(in sec)             & BlockCount             \\ \hline
+1                           & 8                                  & 0.001347                & 4                     & 0.002525                & 9                     & 0.004978                 & 16                    & 0.010088                 & 32                    & 0.020861                 & 64                    & 0.041795                 & 128                    \\ \hline
+2                           & 16                                 & 0.000784                & 2                     & 0.001606                & 5                     & 0.002794                 & 8                     & 0.005239                 & 16                    & 0.011241                 & 32                    & 0.022669                 & 64                     \\ \hline
+3                           & 32                                 & 0.00059                 & 1                     & 0.001004                & 3                     & 0.001663                 & 4                     & 0.003026                 & 8                     & 0.006319                 & 16                    & 0.013032                 & 32                     \\ \hline
+4                           & 64                                 & 0.00065                 & 1                     & 0.000886                & 2                     & 0.001169                 & 2                     & 0.002086                 & 4                     & 0.004214                 & 8                     & 0.008831                 & 16                     \\ \hline
+5                           & 128                                & 0.000593                & 1                     & 0.00067                 & 1                     & 0.00095                  & 1                     & 0.001556                 & 2                     & 0.003158                 & 4                     & 0.006455                 & 8                      \\ \hline
+6                           & 256                                & 0.000609                & 1                     & 0.000736                & 1                     & 0.00096                  & 1                     & 0.001491                 & 1                     & 0.002576                 & 2                     & 0.005224                 & 4                      \\ \hline
+\end{tabular}}
+\end{table}
+
+
+\begin{table}[]
+\centering
+\caption{Effect of order of MHT on algorithm performance (in seconds)}
+\label{tab:orderTest}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|l|l|l|l|l|}
+\toprule
+\hline
+\multicolumn{2}{|l|}{\cellcolor{mediumgray}}                                                                & \multicolumn{6}{c|}{\cellcolor{mediumgray}\textbf{Order}}                                                                                                                                                                                                                                                                                                                                                                                                                                         \\ \cline{3-8} 
+\multicolumn{2}{|l|}{\multirow{-2}{*}{\cellcolor{mediumgray}}}                                              & \multicolumn{1}{c|}{\cellcolor{mediumgray}{\textbf{3}}} & \multicolumn{1}{c|}{\cellcolor{mediumgray}{\textbf{4}}} & \multicolumn{1}{c|}{\cellcolor{mediumgray}{\textbf{5}}} & \multicolumn{1}{c|}{\cellcolor{mediumgray}{\textbf{6}}} & \multicolumn{1}{c|}{\cellcolor{mediumgray}{\textbf{7}}} & \multicolumn{1}{c|}{\cellcolor{mediumgray}{\textbf{8}}} 
+\\ \hline
+\rowcolor{lightgray} 
+\multicolumn{1}{|l|}{\cellcolor{lightgray}
+\textbf{S.No.}} & \textbf{Block count} & \textbf{Time(in seconds)}                                                      & \textbf{Time(sec.)}                                                      & \textbf{Time(sec.)}                                                      & \textbf{Time(sec.)}                                                      & \textbf{Time(sec.)}                                                      & \textbf{Time(sec.)}                                                      \\ \hline
+\multicolumn{1}{|l|}{1}                                      & 2                    & 0.000823                                                                       & 0.000895                                                                       & 0.00091                                                                        & 0.000841                                                                       & 0.000842                                                                       & 0.000915                                                                       \\ \hline
+\multicolumn{1}{|l|}{2}                                      & 5                    & 0.002518                                                                       & 0.001759                                                                       & 0.001738                                                                       & 0.001402                                                                       & 0.001604                                                                       & 0.001429                                                                       \\ \hline
+\multicolumn{1}{|l|}{3}                                      & 8                    & 0.004696                                                                       & 0.003034                                                                       & 0.002782                                                                       & 0.002403                                                                       & 0.00235                                                                        & 0.002415                                                                       \\ \hline
+\multicolumn{1}{|l|}{4}                                      & 16                   & 0.008293                                                                       & 0.006104                                                                       & 0.00562                                                                        & 0.004852                                                                       & 0.004729                                                                       & 0.004711                                                                       \\ \hline
+\multicolumn{1}{|l|}{5}                                      & 32                   & 0.017289                                                                       & 0.011844                                                                       & 0.011368                                                                       & 0.010043                                                                       & 0.010993                                                                       & 0.008546                                                                       \\ \hline
+\multicolumn{1}{|l|}{6}                                      & 64                   & 0.037981                                                                       & 0.02698                                                                        & 0.022799                                                                       & 0.019654                                                                       & 0.019571                                                                       & 0.018799                                                                       \\ \hline
+\end{tabular}}
+\end{table}

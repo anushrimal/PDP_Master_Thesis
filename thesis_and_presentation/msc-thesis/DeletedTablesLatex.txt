@@ -1,0 +1,116 @@
+\begin{table}[]
+\centering
+\caption{Effect of block size on algorithm performance (in seconds)}
+\label{tab:tableBlockSizeTest}
+\begin{tabular}{@{}|l|l|l|l|l|@{}}
+\toprule
+\hline
+\rowcolor{mediumgray} 
+\textbf{S.No.} & \textbf{File size (KB)} & \textbf{Block size} & \textbf{Time (in seconds)} & \textbf{Block count} \\ \midrule
+1  & 32   & 8192   & 0.001347 & 4   \\ \midrule
+2  & 32   & 16384  & 0.000784 & 2   \\ \midrule
+3  & 32   & 32768  & 0.00059  & 1   \\ \midrule
+4  & 32   & 65536  & 0.00065  & 1   \\ \midrule
+5  & 32   & 131072 & 0.000593 & 1   \\ \midrule
+6  & 32   & 262144 & 0.000609 & 1   \\ \midrule
+7  & 64   & 8192   & 0.002525 & 9   \\ \midrule
+8  & 64   & 16384  & 0.001606 & 5   \\ \midrule
+9  & 64   & 32768  & 0.001004 & 3   \\ \midrule
+10 & 64   & 65536  & 0.000886 & 2   \\ \midrule
+11 & 64   & 131072 & 0.00067  & 1   \\ \midrule
+12 & 64   & 262144 & 0.000736 & 1   \\ \midrule
+13 & 128  & 8192   & 0.004978 & 16  \\ \midrule
+14 & 128  & 16384  & 0.002794 & 8   \\ \midrule
+15 & 128  & 32768  & 0.001663 & 4   \\ \midrule
+16 & 128  & 65536  & 0.001169 & 2   \\ \midrule
+17 & 128  & 131072 & 0.00095  & 1   \\ \midrule
+18 & 128  & 262144 & 0.00096  & 1   \\ \midrule
+19 & 256  & 8192   & 0.010088 & 32  \\ \midrule
+20 & 256  & 16384  & 0.005239 & 16  \\ \midrule
+21 & 256  & 32768  & 0.003026 & 8   \\ \midrule
+22 & 256  & 65536  & 0.002086 & 4   \\ \midrule
+23 & 256  & 131072 & 0.001556 & 2   \\ \midrule
+24 & 256  & 262144 & 0.001491 & 1   \\ \midrule
+25 & 512  & 8192   & 0.020861 & 64  \\ \midrule
+26 & 512  & 16384  & 0.011241 & 32  \\ \midrule
+27 & 512  & 32768  & 0.006319 & 16  \\ \midrule
+28 & 512  & 65536  & 0.004214 & 8   \\ \midrule
+29 & 512  & 131072 & 0.003158 & 4   \\ \midrule
+30 & 512  & 262144 & 0.002576 & 2   \\ \midrule
+31 & 1024 & 8192   & 0.041795 & 128 \\ \midrule
+32 & 1024 & 16384  & 0.022669 & 64  \\ \midrule
+33 & 1024 & 32768  & 0.013032 & 32  \\ \midrule
+34 & 1024 & 65536  & 0.008831 & 16  \\ \midrule
+35 & 1024 & 131072 & 0.006455 & 8   \\ \midrule
+36 & 1024 & 262144 & 0.005224 & 4   \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\centering
+\caption{Effect of block size on algorithm performance (in seconds}
+\label{tab:blockSizeTestTab}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|l|}
+\hline
+\toprule
+         & \multicolumn{12}{c|}{\cellcolor{mediumgray}\textbf{Block size (in KB)}}                                                                                                                                                                                                                                                                                                                                                                                                                                        \\ \cline{2-13} 
+\multirow{-2}{*}{}                     & \multicolumn{2}{c|}{\cellcolor{mediumgray}{\textbf{8K}}} & \multicolumn{2}{c|}{\cellcolor{mediumgray}{ \textbf{16K}}} & \multicolumn{2}{c|}{\cellcolor{mediumgray}{\textbf{32K}}} & \multicolumn{2}{c|}{\cellcolor{mediumgray}{\textbf{64K}}} & \multicolumn{2}{c|}{\cellcolor{mediumgray}{\textbf{128K}}} & \multicolumn{2}{c|}{\cellcolor{mediumgray}{ \textbf{256K}}} \\ \hline
+\rowcolor{lightgray}
+\textbf{S.No.} & \textbf{Time(in sec)}       & \textbf{BlockCount}      & \textbf{Time(in sec.)}       & \textbf{BlockCount}       & \textbf{Time(in sec.)}       & \textbf{BlockCount}       & \textbf{Time(in sec.)}       & \textbf{BlockCount}       & \textbf{Time(in sec.)}        & \textbf{BlockCount}       & \textbf{Time(in sec.)}        & \textbf{BlockCount}       \\ \hline
+1                                      & 0.001347                                            & 4                         & 0.000784                                            & 2                          & 0.00059                                             & 1                          & 0.00065                                             & 1                          & 0.000593                                             & 1                          & 0.000609                                             & 128                        \\ \hline
+2                                      & 0.002525                                            & 9                         & 0.001606                                            & 5                          & 0.001004                                            & 3                          & 0.000886                                            & 2                          & 0.00067                                              & 1                          & 0.000736                                             & 1                          \\ \hline
+3                                      & 0.004978                                            & 16                        & 0.002794                                            & 8                          & 0.001663                                            & 4                          & 0.001169                                            & 2                          & 0.00095                                              & 1                          & 0.00096                                              & 1                          \\ \hline
+4                                      & 0.010088                                            & 32                        & 0.005239                                            & 16                         & 0.003026                                            & 8                          & 0.002086                                            & 4                          & 0.001556                                             & 2                          & 0.001491                                             & 1                          \\ \hline
+5                                      & 0.020861                                            & 64                        & 0.011241                                            & 32                         & 0.006319                                            & 16                         & 0.004214                                            & 8                          & 0.003158                                             & 4                          & 0.002576                                             & 2                          \\ \hline
+6                                      & 0.041795                                            & 128                       & 0.022669                                            & 64                         & 0.013032                                            & 32                         & 0.008831                                            & 16                         & 0.006455                                             & 8                          & 0.005224                                             & 4                          \\ \hline
+\end{tabular}}
+\end{table}
+
+
+\begin{table}[]
+\centering
+\caption{Effect of order of MHT on algorithm performance (in seconds)}
+\label{tab:orderTest}
+\begin{tabular}{@{}|l|l|l|l|l|@{}}
+\toprule
+\rowcolor{mediumgray} 
+\textbf{S.No.} & \textbf{File size (KB)} & \textbf{MHT Order} & \textbf{Time (in seconds)} & \textbf{Block count} \\ \midrule
+1  & 32   & 3 & 0.000823 & 2  \\ \midrule
+2  & 32   & 4 & 0.000895 & 2  \\ \midrule
+3  & 32   & 5 & 0.00091  & 2  \\ \midrule
+4  & 32   & 6 & 0.000841 & 2  \\ \midrule
+5  & 32   & 7 & 0.000842 & 2  \\ \midrule
+6  & 32   & 8 & 0.000915 & 2  \\ \midrule
+7  & 64   & 3 & 0.002518 & 5  \\ \midrule
+8  & 64   & 4 & 0.001759 & 5  \\ \midrule
+9  & 64   & 5 & 0.001738 & 5  \\ \midrule
+10 & 64   & 6 & 0.001402 & 5  \\ \midrule
+11 & 64   & 7 & 0.001604 & 5  \\ \midrule
+12 & 64   & 8 & 0.001429 & 5  \\ \midrule
+13 & 128  & 3 & 0.004696 & 8  \\ \midrule
+14 & 128  & 4 & 0.003034 & 8  \\ \midrule
+15 & 128  & 5 & 0.002782 & 8  \\ \midrule
+16 & 128  & 6 & 0.002403 & 8  \\ \midrule
+17 & 128  & 7 & 0.00235  & 8  \\ \midrule
+18 & 128  & 8 & 0.002415 & 8  \\ \midrule
+19 & 256  & 3 & 0.008293 & 16 \\ \midrule
+20 & 256  & 4 & 0.006104 & 16 \\ \midrule
+21 & 256  & 5 & 0.00562  & 16 \\ \midrule
+22 & 256  & 6 & 0.004852 & 16 \\ \midrule
+23 & 256  & 7 & 0.004729 & 16 \\ \midrule
+24 & 256  & 8 & 0.004711 & 16 \\ \midrule
+25 & 512  & 3 & 0.017289 & 32 \\ \midrule
+26 & 512  & 4 & 0.011844 & 32 \\ \midrule
+27 & 512  & 5 & 0.011368 & 32 \\ \midrule
+28 & 512  & 6 & 0.010043 & 32 \\ \midrule
+29 & 512  & 7 & 0.010993 & 32 \\ \midrule
+30 & 512  & 8 & 0.008546 & 32 \\ \midrule
+31 & 1024 & 3 & 0.037981 & 64 \\ \midrule
+32 & 1024 & 4 & 0.02698  & 64 \\ \midrule
+33 & 1024 & 5 & 0.022799 & 64 \\ \midrule
+34 & 1024 & 6 & 0.019654 & 64 \\ \midrule
+35 & 1024 & 7 & 0.019571 & 64 \\ \midrule
+36 & 1024 & 8 & 0.018799 & 64 \\ \bottomrule
+\end{tabular}
+\end{table}

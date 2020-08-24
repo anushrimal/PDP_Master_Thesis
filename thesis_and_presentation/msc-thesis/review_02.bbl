@@ -1,0 +1,124 @@
+\begin{thebibliography}{10}
+
+\bibitem{BPlusTree}
+B+ tree c implementation.
+\newblock \url{http://www.amittai.com/}.
+
+\bibitem{Hitrust}
+Hitrust report – u.s. healthcare data breach trends.
+\newblock \url{http://hitrustalliance.net/breach-reports/}, Last accessed on
+  2020-2-13.
+
+\bibitem{REDIS}
+Redis db, an open-source im-memory store.
+\newblock \url{https://redis.io/}.
+
+\bibitem{RocksDB}
+Rocksdb: A persistent key-value store.
+\newblock \url{https://rocksdb.org/}.
+
+\bibitem{bbc}
+Google loses data as lightning strikes, Aug 2015.
+\newblock \url{https://www.bbc.com/news/technology-33989384}.
+
+\bibitem{MCAFEE}
+Cloud is ubiquitous and untrusted, May 2018.
+\newblock
+  \url{https://www.mcafee.com/blogs/enterprise/cloud-security/cloud-is-ubiquitous-and-untrusted/}.
+
+\bibitem{MHT}
+Merkle hash tree, 2020.
+\newblock \url{https://en.wikipedia.org/wiki/Merkle_tree}.
+
+\bibitem{SGX}
+Software guard extensions, 2020.
+\newblock \url{https://software.intel.com/en-us/sgx}.
+
+\bibitem{GRRJ}
+{\sc Ateniese, G., Burns, R., Curtmola, R., Herring, J., Kissner, L., Peterson,
+  Z., and Song, D.}
+\newblock Provable data possession at untrusted stores.
+\newblock {\em Proceedings of the 14th ACM conference on Computer and
+  communications security - CCS 07\/} (2007).
+
+\bibitem{IntegrityBook}
+{\sc Atluri, V., and Pernul, G.}
+\newblock {\em Data and applications security and privacy XXVIII: 28th Annual
+  IFIP WG 11.3 Working Conference, DBSec 2014, Vienna, Austria, July 14-16,
+  2014: proceedings}.
+\newblock Springer, 2014.
+
+\bibitem{dropbox}
+{\sc Bott, E.}
+\newblock Dropbox sync glitch results in lost data for some subscribers, Oct
+  2014.
+\newblock
+  \url{https://www.zdnet.com/article/dropbox-sync-glitch-results-in-lost-data-for-some-subscribers/}.
+
+\bibitem{Restbed}
+{\sc Corvusoft}.
+\newblock Restbed.
+\newblock \url{https://github.com/Corvusoft/restbed}.
+
+\bibitem{YJA}
+{\sc Deswarte, Y., Quisquater, J.-J., and Saïdane, A.}
+\newblock Remote integrity checking.
+\newblock {\em Integrity and Internal Control in Information Systems VI IFIP
+  International Federation for Information Processing\/}, 1–11.
+
+\bibitem{PoRHardness}
+{\sc Dodis, Y., Vadhan, S., and Wichs, D.}
+\newblock Proofs of retrievability via hardness amplification.
+\newblock {\em Theory of Cryptography Lecture Notes in Computer Science\/}
+  (2009), 109–127.
+
+\bibitem{FDS}
+{\sc Fernandes, D., Soares, L., Gomes, J., Freire, M., and Inácio, P.}
+\newblock Security issues in cloud environments - a survey.
+\newblock {\em Int. J. Inf. Secur.: Security in Cloud Computing\/} (04 2013).
+
+\bibitem{DPS}
+{\sc Filho, D., and Barreto, P.}
+\newblock Demonstrating data possession and uncheatable data transfer.
+\newblock {\em IACR Cryptology ePrint Archive 2006\/} (01 2006), 150.
+
+\bibitem{PDPDef}
+{\sc Han, S., Liu, S., Chen, K., and Gu, D.}
+\newblock Proofs of retrievability based on mrd codes.
+\newblock {\em Information Security Practice and Experience Lecture Notes in
+  Computer Science\/} (2014), 330–345.
+
+\bibitem{SHA}
+{\sc Handschuh, H.}
+\newblock {\em SHA Family (Secure Hash Algorithm)}.
+\newblock Springer US, Boston, MA, 2005.
+
+\bibitem{JnK}
+{\sc Juels, A., and Kaliski, B.~S.}
+\newblock Pors.
+\newblock {\em Proceedings of the 14th ACM conference on Computer and
+  communications security - CCS 07\/} (2007).
+
+\bibitem{RestSdk}
+{\sc Microsoft}.
+\newblock Microsoft restsdk, Dec 2019.
+\newblock \url{https://github.com/microsoft/cpprestsdk}.
+
+\bibitem{Paper13}
+{\sc Muhammad Saqib~Niaz, G.~S.}
+\newblock Merkle hash tree based techniques for data integrity of outsourced
+  data.
+\newblock {\em http://ceur-ws.org/Vol-1366/paper13.pdf\/}, 1–13.
+
+\bibitem{Pistache}
+{\sc Oktal}.
+\newblock Pistache, Feb 2020.
+\newblock \url{https://github.com/oktal/pistache}.
+
+\bibitem{CPR}
+{\sc Shacham, H., and Waters, B.}
+\newblock Compact proofs of retrievability.
+\newblock {\em Advances in Cryptology - ASIACRYPT 2008 Lecture Notes in
+  Computer Science\/} (2008), 90–107.
+
+\end{thebibliography}
